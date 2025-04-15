@@ -30,7 +30,7 @@ const Layout = () => {
     error: err,
     data,
   } = useQuery({
-    queryKey: ["formes"],
+    queryKey: ["formes_unites"],
     enabled: !!database,
     queryFn: async () => {
       if (database) {
