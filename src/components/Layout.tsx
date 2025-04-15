@@ -9,9 +9,6 @@ import {
   Music,
   Download,
   User,
-  MenuIcon,
-  X,
-  Layers,
 } from "lucide-react";
 import SideBar from "./SideBar";
 

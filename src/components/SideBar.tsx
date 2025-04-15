@@ -1,19 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import {
-  Home,
-  Files,
-  Settings,
-  Mail,
-  Calendar,
-  Image,
-  Music,
-  Download,
-  User,
-  MenuIcon,
-  X,
-  Layers,
-  LucideProps,
-} from "lucide-react";
+import { Settings, Layers, LucideProps } from "lucide-react";
 
 type MenuItems = {
   id: string;
