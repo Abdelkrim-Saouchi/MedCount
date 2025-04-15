@@ -3,9 +3,9 @@ import useDatabase from "../hooks/useDatabase";
 import { FormEvent } from "react";
 
 type DataForm = {
-  forme: String | null;
+  formeId: String | null;
   nomination: string | null;
-  unité: string | null;
+  unitéId: string | null;
   capacité: string | null;
 };
 
@@ -50,31 +50,14 @@ const Layout = () => {
 
   const mutation = useMutation({
     mutationFn: async (data: DataForm) => {
-      console.log("data:", data);
       try {
         await database?.execute("PRAGMA foreign_keys = ON");
 
-        await database?.execute("BEGIN");
-        let result1 = await database?.execute(
-          "INSERT INTO formes (nomination) VALUES ($1)",
-          [data.forme],
-        );
-        let result2 = await database?.execute(
-          "INSERT INTO unites (nomination) VALUES ($1)",
-          [data.unité],
-        );
-        console.log("result1", result1?.lastInsertId);
         await database?.execute(
-          "INSERT INOT medicaments (nomination, capacité, forme, unite) VALUES ($1, $2, $3, $4)",
-          [
-            data.nomination,
-            data.capacité,
-            result1?.lastInsertId,
-            result2?.lastInsertId,
-          ],
+          "INSERT INTO medicaments (nomination, capacite, forme, unite) VALUES ($1, $2, $3, $4)",
+          [data.nomination, data.capacité, data.formeId, data.unitéId],
         );
       } catch (error) {
-        await database?.execute("ROLLBACK");
         console.log("transaction failed", error);
       }
     },
@@ -83,15 +66,15 @@ const Layout = () => {
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
-    const forme = data.get("forme") as string;
+    const formeId = data.get("forme_id") as string;
     const nomination = data.get("nomination") as string;
-    const unité = data.get("unités") as string;
+    const unitéId = data.get("unités_id") as string;
     const capacité = data.get("capacité") as string;
 
     mutation.mutate({
-      forme,
+      formeId,
       nomination,
-      unité,
+      unitéId,
       capacité,
     });
   };
@@ -104,11 +87,11 @@ const Layout = () => {
       >
         <div className="flex flex-col">
           <label htmlFor="form-select">Séléctionner la forme:</label>
-          <select id="form-select" name="forme">
+          <select id="form-select" name="forme_id">
             {!dataIsLoading &&
               data?.formeRows.map((forme) => {
                 return (
-                  <option key={forme.forme_id} value={forme.nomination}>
+                  <option key={forme.forme_id} value={forme.forme_id}>
                     {forme.nomination}
                   </option>
                 );
@@ -128,11 +111,11 @@ const Layout = () => {
 
         <div className="flex flex-col">
           <label htmlFor="unity-select">Séléctionner l'unité:</label>
-          <select id="unity-select" name="unités">
+          <select id="unity-select" name="unités_id">
             {!dataIsLoading &&
               data?.uniteRows.map((unite) => (
-                <option key={unite.unite_id} value={unite.nomination}>
-                  {unite.nomination.toUpperCase()}
+                <option key={unite.unite_id} value={unite.unite_id}>
+                  {unite.nomination}
                 </option>
               ))}
           </select>
