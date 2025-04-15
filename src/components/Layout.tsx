@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { Home, Settings, PackagePlus } from "lucide-react";
+import { Home, PackagePlus } from "lucide-react";
 import SideBar from "./SideBar";
 import { Outlet } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Layout = () => {
+  const queryClient = useQueryClient();
+
   const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   const menuItems = [
     { path: "/", icon: Home, label: "Home" },
     { path: "/create_drug", icon: PackagePlus, label: "Ajouter" },
-    { path: "settings", icon: Settings, label: "Settings" },
   ];
 
   return (
