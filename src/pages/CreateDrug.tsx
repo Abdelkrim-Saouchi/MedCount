@@ -5,6 +5,7 @@ import { Calculator, PackagePlus, Ratio } from "lucide-react";
 import { useState } from "react";
 import CreateDrugForm from "../components/CreateDrugForm";
 import CreateFormeForm from "../components/CreateFormeForm";
+import CreateUnitForm from "../components/CreateUnitForm";
 
 const CreateDrug = () => {
   const [activeTab, setActiveTab] = useState("drug");
@@ -54,7 +55,7 @@ const CreateDrug = () => {
         ) : activeTab === "forme" ? (
           <CreateFormeForm />
         ) : (
-          "Unite"
+          <CreateUnitForm />
         )}
       </div>
     </div>
