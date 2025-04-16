@@ -6,6 +6,7 @@ import { useState } from "react";
 import CreateDrugForm from "../components/CreateDrugForm";
 import CreateFormeForm from "../components/CreateFormeForm";
 import CreateUnitForm from "../components/CreateUnitForm";
+import DrugList from "../components/DrugList";
 
 const CreateDrug = () => {
   const [activeTab, setActiveTab] = useState("drug");
@@ -51,7 +52,10 @@ const CreateDrug = () => {
       {/* Tab Content */}
       <div className="rounded-xl bg-white p-6 shadow-md">
         {activeTab === "drug" ? (
-          <CreateDrugForm />
+          <>
+            <CreateDrugForm />
+            <DrugList />
+          </>
         ) : activeTab === "forme" ? (
           <CreateFormeForm />
         ) : (
