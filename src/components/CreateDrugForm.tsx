@@ -3,19 +3,19 @@ import { Calculator, PackagePlus, Ratio } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useDatabase from "../hooks/useDatabase";
 
-type DataForm = {
+export type DataForm = {
   formeId: String | null;
   nomination: string | null;
   unitéId: string | null;
   capacité: string | null;
 };
 
-type FormeRow = {
+export type FormeRow = {
   forme_id: number;
   nomination: string;
 };
 
-type UniteRow = {
+export type UniteRow = {
   unite_id: number;
   nomination: string;
 };

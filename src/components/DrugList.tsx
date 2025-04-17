@@ -2,15 +2,21 @@ import { useQuery } from "@tanstack/react-query";
 import { Edit, Pill, Trash2 } from "lucide-react";
 import useDatabase from "../hooks/useDatabase";
 
-type Drug = {
+export type Drug = {
   id: string;
   drug_name: string;
   forme_name: string;
+  forme_id?: string;
   unit_name: string;
+  unite_id?: string;
   capacity: number;
 };
 
-const DrugList = () => {
+const DrugList = ({
+  handleEditClick,
+}: {
+  handleEditClick: (drug: Drug) => void;
+}) => {
   const { database } = useDatabase();
   const { data: drugs } = useQuery({
     queryKey: ["drugsList"],
@@ -19,7 +25,7 @@ const DrugList = () => {
       if (database) {
         try {
           const result: Drug[] = await database.select(
-            "SELECT id, medicaments.nomination AS drug_name, formes.nomination AS forme_name, unites.nomination As unit_name, medicaments.capacite AS capacity FROM medicaments INNER JOIN formes ON medicaments.forme = formes.forme_id INNER JOIN unites ON medicaments.unite = unites.unite_id",
+            "SELECT id, medicaments.nomination AS drug_name, formes.nomination AS forme_name, formes.forme_id AS forme_id, unites.nomination As unit_name, unites.unite_id AS unite_id, medicaments.capacite AS capacity FROM medicaments INNER JOIN formes ON medicaments.forme = formes.forme_id INNER JOIN unites ON medicaments.unite = unites.unite_id",
           );
           return result;
         } catch (error) {
@@ -87,7 +93,10 @@ const DrugList = () => {
                         >
                           <Trash2 className="h-5 w-5" />
                         </button>
-                        <button className="text-blue-600 hover:text-blue-900">
+                        <button
+                          onClick={() => handleEditClick(drug)}
+                          className="text-blue-600 hover:text-blue-900"
+                        >
                           <Edit className="h-5 w-5" />
                         </button>
                       </div>

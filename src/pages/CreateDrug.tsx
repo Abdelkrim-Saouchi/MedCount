@@ -6,10 +6,19 @@ import { useState } from "react";
 import CreateDrugForm from "../components/CreateDrugForm";
 import CreateFormeForm from "../components/CreateFormeForm";
 import CreateUnitForm from "../components/CreateUnitForm";
-import DrugList from "../components/DrugList";
+import DrugList, { Drug } from "../components/DrugList";
+import DrugEditModal from "../components/DrugEditModal";
 
 const CreateDrug = () => {
   const [activeTab, setActiveTab] = useState("drug");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingDrug, setEditingDrug] = useState<Drug | null>(null);
+
+  const handleEditClick = (drug: Drug) => {
+    setEditingDrug(drug);
+    setIsEditModalOpen(true);
+  };
+
   return (
     <div className="mx-auto max-w-2xl">
       {/* Tabs */}
@@ -54,7 +63,13 @@ const CreateDrug = () => {
         {activeTab === "drug" ? (
           <>
             <CreateDrugForm />
-            <DrugList />
+            <DrugList handleEditClick={handleEditClick} />
+            <DrugEditModal
+              isEditModalOpen={isEditModalOpen}
+              setIsEditModalOpen={setIsEditModalOpen}
+              editingDrug={editingDrug}
+              setEditingDrug={setEditingDrug}
+            />
           </>
         ) : activeTab === "forme" ? (
           <CreateFormeForm />
