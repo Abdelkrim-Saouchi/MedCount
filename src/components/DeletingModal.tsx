@@ -8,22 +8,27 @@ const DeletingModal = ({
   setIsDeleteModalOpen,
   deletingId,
   setDeletingId,
+  tableName,
+  idName,
 }: {
   isDeleteModalOpen: boolean;
   setIsDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
   deletingId: string | null;
   setDeletingId: Dispatch<SetStateAction<string | null>>;
+  tableName: string;
+  idName: string;
 }) => {
   const queryClient = useQueryClient();
   const { database } = useDatabase();
   const mutation = useMutation({
     mutationFn: async () => {
       try {
-        await database?.execute("DELETE FROM medicaments WHERE id = $1", [
-          deletingId,
-        ]);
+        await database?.execute(
+          `DELETE FROM ${tableName} WHERE ${idName} = $1`,
+          [deletingId],
+        );
       } catch (error) {
-        console.log("deleting drug failed!");
+        console.log("deleting failed! ", error);
       }
     },
     onSuccess: () => {

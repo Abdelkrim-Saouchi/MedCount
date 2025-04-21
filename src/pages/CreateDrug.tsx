@@ -22,12 +22,17 @@ const CreateDrug = () => {
   const [isEditFormeModalOpen, setIsEditFormeModalOpen] = useState(false);
   const [editingForme, setEditingForme] = useState<Forme | null>(null);
 
+  const [tableName, setTabaleName] = useState("medicaments");
+  const [idName, setIdName] = useState("id");
+
   const handleEditClick = (drug: Drug) => {
     setEditingDrug(drug);
     setIsEditModalOpen(true);
   };
 
   const handleDeleteClick = (drug: Drug) => {
+    setTabaleName("medicaments");
+    setIdName("id");
     setDeletingId(drug.id);
     setIsDeleteModalOpen(true);
   };
@@ -37,7 +42,12 @@ const CreateDrug = () => {
     setIsEditFormeModalOpen(true);
   };
 
-  const handleDeleteFormeClick = (forme: Forme) => {};
+  const handleDeleteFormeClick = (forme: Forme) => {
+    setTabaleName("formes");
+    setIdName("forme_id");
+    setDeletingId(forme.forme_id);
+    setIsDeleteModalOpen(true);
+  };
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -117,6 +127,8 @@ const CreateDrug = () => {
         setIsDeleteModalOpen={setIsDeleteModalOpen}
         deletingId={deletingId}
         setDeletingId={setDeletingId}
+        tableName={tableName}
+        idName={idName}
       />
     </div>
   );
