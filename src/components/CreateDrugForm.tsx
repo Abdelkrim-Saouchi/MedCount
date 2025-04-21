@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Calculator, PackagePlus, Ratio } from "lucide-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import useDatabase from "../hooks/useDatabase";
 
 export type DataForm = {
@@ -21,6 +26,7 @@ export type UniteRow = {
 };
 
 const CreateDrugForm = () => {
+  const queryClient = useQueryClient();
   const [formInputs, setFormInputs] = useState({
     forme: "",
     drugName: "",
@@ -69,6 +75,7 @@ const CreateDrugForm = () => {
     },
     onSuccess: () => {
       setFormInputs({ forme: "", drugName: "", unit: "", capacity: "" });
+      queryClient.invalidateQueries();
     },
   });
 
