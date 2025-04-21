@@ -8,15 +8,23 @@ import CreateFormeForm from "../components/CreateFormeForm";
 import CreateUnitForm from "../components/CreateUnitForm";
 import DrugList, { Drug } from "../components/DrugList";
 import DrugEditModal from "../components/DrugEditModal";
+import DeletingModal from "../components/DeletingModal";
 
 const CreateDrug = () => {
   const [activeTab, setActiveTab] = useState("drug");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingDrug, setEditingDrug] = useState<Drug | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleEditClick = (drug: Drug) => {
     setEditingDrug(drug);
     setIsEditModalOpen(true);
+  };
+
+  const handleDeleteClick = (drug: Drug) => {
+    setDeletingId(drug.id);
+    setIsDeleteModalOpen(true);
   };
 
   return (
@@ -63,7 +71,10 @@ const CreateDrug = () => {
         {activeTab === "drug" ? (
           <>
             <CreateDrugForm />
-            <DrugList handleEditClick={handleEditClick} />
+            <DrugList
+              handleEditClick={handleEditClick}
+              handleDeleteClick={handleDeleteClick}
+            />
             <DrugEditModal
               isEditModalOpen={isEditModalOpen}
               setIsEditModalOpen={setIsEditModalOpen}
@@ -77,66 +88,14 @@ const CreateDrug = () => {
           <CreateUnitForm />
         )}
       </div>
+      <DeletingModal
+        isDeleteModalOpen={isDeleteModalOpen}
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        deletingId={deletingId}
+        setDeletingId={setDeletingId}
+      />
     </div>
   );
-
-  //   <main className="flex min-h-dvh justify-center bg-gradient-to-r from-[#5C258D] to-[#4389A2] py-2 text-white">
-  //     <form
-  //       onSubmit={onSubmit}
-  //       className="h-fit space-y-3 border border-green-400 p-4"
-  //     >
-  //       <div className="flex flex-col">
-  //         <label htmlFor="form-select">Séléctionner la forme:</label>
-  //         <select id="form-select" name="forme_id">
-  //           {!dataIsLoading &&
-  //             data?.formeRows.map((forme) => {
-  //               return (
-  //                 <option key={forme.forme_id} value={forme.forme_id}>
-  //                   {forme.nomination}
-  //                 </option>
-  //               );
-  //             })}
-  //         </select>
-  //         {isError && <p className="text-red-600">{err.message}</p>}
-  //       </div>
-  //
-  //       <div className="flex flex-col">
-  //         <label>Nom de médicament:</label>
-  //         <input
-  //           placeholder="Zomax"
-  //           name="nomination"
-  //           className="border border-green-400 p-2"
-  //         />
-  //       </div>
-  //
-  //       <div className="flex flex-col">
-  //         <label htmlFor="unity-select">Séléctionner l'unité:</label>
-  //         <select id="unity-select" name="unités_id">
-  //           {!dataIsLoading &&
-  //             data?.uniteRows.map((unite) => (
-  //               <option key={unite.unite_id} value={unite.unite_id}>
-  //                 {unite.nomination}
-  //               </option>
-  //             ))}
-  //         </select>
-  //         {isError && <p className="text-red-600">{err.message}</p>}
-  //       </div>
-  //
-  //       <div className="flex flex-col">
-  //         <label>Capacité totale:</label>
-  //         <input
-  //           type="number"
-  //           name="capacité"
-  //           className="border border-green-400 p-2"
-  //         />
-  //       </div>
-  //
-  //       <button type="submit" className="bg-gray-400 p-2 hover:bg-gray-800">
-  //         Enregistrement
-  //       </button>
-  //     </form>
-  //   </main>
-  // );
 };
 
 export default CreateDrug;

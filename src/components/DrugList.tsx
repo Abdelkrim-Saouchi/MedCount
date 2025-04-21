@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Edit, Pill, Trash2 } from "lucide-react";
 import useDatabase from "../hooks/useDatabase";
+import { Dispatch, SetStateAction } from "react";
 
 export type Drug = {
   id: string;
@@ -14,8 +15,10 @@ export type Drug = {
 
 const DrugList = ({
   handleEditClick,
+  handleDeleteClick,
 }: {
   handleEditClick: (drug: Drug) => void;
+  handleDeleteClick: (drug: Drug) => void;
 }) => {
   const { database } = useDatabase();
   const { data: drugs } = useQuery({
@@ -34,10 +37,6 @@ const DrugList = ({
       }
     },
   });
-
-  const handleDeleteDrug = (id: string) => {
-    //
-  };
 
   return (
     <div className="mt-8">
@@ -88,7 +87,7 @@ const DrugList = ({
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">
                       <div className="flex space-x-2">
                         <button
-                          onClick={() => handleDeleteDrug(drug.id)}
+                          onClick={() => handleDeleteClick(drug)}
                           className="text-red-600 hover:text-red-900"
                         >
                           <Trash2 className="h-5 w-5" />
