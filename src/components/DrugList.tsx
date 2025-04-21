@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Edit, Pill, Trash2 } from "lucide-react";
 import useDatabase from "../hooks/useDatabase";
-import { Dispatch, SetStateAction } from "react";
 
 export type Drug = {
   id: string;
@@ -25,15 +24,20 @@ const DrugList = ({
     queryKey: ["drugsList"],
     enabled: !!database,
     queryFn: async () => {
-      if (database) {
-        try {
-          const result: Drug[] = await database.select(
-            "SELECT id, medicaments.nomination AS drug_name, formes.nomination AS forme_name, formes.forme_id AS forme_id, unites.nomination As unit_name, unites.unite_id AS unite_id, medicaments.capacite AS capacity FROM medicaments INNER JOIN formes ON medicaments.forme = formes.forme_id INNER JOIN unites ON medicaments.unite = unites.unite_id",
-          );
-          return result;
-        } catch (error) {
-          console.log("Fetch druglist failed!");
+      if (!database) {
+        throw new Error("Database connection not available");
+      }
+      try {
+        const result: Drug[] = await database.select(
+          "SELECT id, medicaments.nomination AS drug_name, formes.nomination AS forme_name, formes.forme_id AS forme_id, unites.nomination As unit_name, unites.unite_id AS unite_id, medicaments.capacite AS capacity FROM medicaments INNER JOIN formes ON medicaments.forme = formes.forme_id INNER JOIN unites ON medicaments.unite = unites.unite_id",
+        );
+        if (!result) {
+          return [];
         }
+        return result;
+      } catch (error) {
+        console.log("Fetch druglist failed!", error);
+        throw new Error("Failed to fetch drug list");
       }
     },
   });
