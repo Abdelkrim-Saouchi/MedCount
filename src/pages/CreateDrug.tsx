@@ -12,6 +12,7 @@ import DeletingModal from "../components/DeletingModal";
 import FormeList, { Forme } from "../components/FormeList";
 import FormeEditModal from "../components/FormeEditModal";
 import UnitList, { Unit } from "../components/UnitList";
+import UnitEditModal from "../components/UnitEditModal";
 
 const CreateDrug = () => {
   const [activeTab, setActiveTab] = useState("drug");
@@ -140,6 +141,12 @@ const CreateDrug = () => {
             <UnitList
               handleEditUnitClick={handleUnitEditClick}
               handleDeleteUnitClick={handleUnitDeleteClick}
+            />
+            <UnitEditModal
+              isEditUnitModalOpen={isEditUnitModalOpen}
+              setIsEditUnitModalOpen={setIsEditUnitModalOpen}
+              editingUnit={editingUnit}
+              setEditingUnit={setEditingUnit}
             />
           </>
         )}
