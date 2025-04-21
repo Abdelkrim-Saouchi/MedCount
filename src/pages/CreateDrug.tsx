@@ -11,6 +11,7 @@ import DrugEditModal from "../components/DrugEditModal";
 import DeletingModal from "../components/DeletingModal";
 import FormeList, { Forme } from "../components/FormeList";
 import FormeEditModal from "../components/FormeEditModal";
+import UnitList, { Unit } from "../components/UnitList";
 
 const CreateDrug = () => {
   const [activeTab, setActiveTab] = useState("drug");
@@ -24,6 +25,9 @@ const CreateDrug = () => {
 
   const [tableName, setTabaleName] = useState("medicaments");
   const [idName, setIdName] = useState("id");
+
+  const [isEditUnitModalOpen, setIsEditUnitModalOpen] = useState(false);
+  const [editingUnit, setEditingUnit] = useState<Unit | null>(null);
 
   const handleEditClick = (drug: Drug) => {
     setEditingDrug(drug);
@@ -46,6 +50,18 @@ const CreateDrug = () => {
     setTabaleName("formes");
     setIdName("forme_id");
     setDeletingId(forme.forme_id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleUnitEditClick = (unit: Unit) => {
+    setEditingUnit(unit);
+    setIsEditUnitModalOpen(true);
+  };
+
+  const handleUnitDeleteClick = (unit: Unit) => {
+    setTabaleName("unites");
+    setIdName("unite_id");
+    setDeletingId(unit.unite_id);
     setIsDeleteModalOpen(true);
   };
 
@@ -119,7 +135,13 @@ const CreateDrug = () => {
             />
           </>
         ) : (
-          <CreateUnitForm />
+          <>
+            <CreateUnitForm />
+            <UnitList
+              handleEditUnitClick={handleUnitEditClick}
+              handleDeleteUnitClick={handleUnitDeleteClick}
+            />
+          </>
         )}
       </div>
       <DeletingModal
