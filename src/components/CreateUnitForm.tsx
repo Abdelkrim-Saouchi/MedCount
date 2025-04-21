@@ -1,8 +1,9 @@
 import { useState } from "react";
 import useDatabase from "../hooks/useDatabase";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const CreateUnitForm = () => {
+  const queryClient = useQueryClient();
   const [unitName, setUnitName] = useState("");
   const { database } = useDatabase();
 
@@ -18,6 +19,7 @@ const CreateUnitForm = () => {
     },
     onSuccess: () => {
       setUnitName("");
+      queryClient.invalidateQueries();
     },
   });
 
