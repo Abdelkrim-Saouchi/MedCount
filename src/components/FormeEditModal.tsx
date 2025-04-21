@@ -19,14 +19,11 @@ const FormeEditModal = ({
   const { database } = useDatabase();
   const mutation = useMutation({
     mutationFn: async (forme: Forme) => {
-      console.log("forme:", forme);
       try {
-        console.log("database", database);
         await database?.execute(
           "UPDATE formes SET nomination = $1 WHERE forme_id = $2",
           [forme.nomination, forme.forme_id],
         );
-        console.log("run");
       } catch (error) {
         console.log("update forme failed ", error);
       }
