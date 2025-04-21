@@ -9,6 +9,8 @@ import CreateUnitForm from "../components/CreateUnitForm";
 import DrugList, { Drug } from "../components/DrugList";
 import DrugEditModal from "../components/DrugEditModal";
 import DeletingModal from "../components/DeletingModal";
+import FormeList, { Forme } from "../components/FormeList";
+import FormeEditModal from "../components/FormeEditModal";
 
 const CreateDrug = () => {
   const [activeTab, setActiveTab] = useState("drug");
@@ -16,6 +18,9 @@ const CreateDrug = () => {
   const [editingDrug, setEditingDrug] = useState<Drug | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const [isEditFormeModalOpen, setIsEditFormeModalOpen] = useState(false);
+  const [editingForme, setEditingForme] = useState<Forme | null>(null);
 
   const handleEditClick = (drug: Drug) => {
     setEditingDrug(drug);
@@ -26,6 +31,13 @@ const CreateDrug = () => {
     setDeletingId(drug.id);
     setIsDeleteModalOpen(true);
   };
+
+  const handleEditFormeClick = (forme: Forme) => {
+    setEditingForme(forme);
+    setIsEditFormeModalOpen(true);
+  };
+
+  const handleDeleteFormeClick = (forme: Forme) => {};
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -83,7 +95,19 @@ const CreateDrug = () => {
             />
           </>
         ) : activeTab === "forme" ? (
-          <CreateFormeForm />
+          <>
+            <CreateFormeForm />
+            <FormeList
+              handleEditFormeClick={handleEditFormeClick}
+              handleDeleteFormeClick={handleDeleteFormeClick}
+            />
+            <FormeEditModal
+              isEditFormeModalOpen={isEditFormeModalOpen}
+              setIsEditFormeModalOpen={setIsEditFormeModalOpen}
+              editingForme={editingForme}
+              setEditingForme={setEditingForme}
+            />
+          </>
         ) : (
           <CreateUnitForm />
         )}
