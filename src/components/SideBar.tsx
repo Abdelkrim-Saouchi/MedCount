@@ -36,10 +36,10 @@ const SideBar = ({
             className={`transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "w-0 overflow-hidden opacity-0"}`}
           >
             <h1 className="text-lg font-bold whitespace-nowrap text-gray-800">
-              AppName
+              MedCount
             </h1>
             <p className="text-xs whitespace-nowrap text-gray-500">
-              Desktop Client
+              Calculer facilement
             </p>
           </div>
         </div>
