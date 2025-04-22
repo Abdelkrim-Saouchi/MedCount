@@ -1,4 +1,4 @@
-import { Calculator, PackagePlus, Ratio } from "lucide-react";
+import { Calculator, PackagePlus, Ratio, Scale } from "lucide-react";
 import { useState } from "react";
 import CreateDrugForm from "../components/CreateDrugForm";
 import CreateFormeForm from "../components/CreateFormeForm";
@@ -10,6 +10,9 @@ import FormeList, { Forme } from "../components/FormeList";
 import FormeEditModal from "../components/FormeEditModal";
 import UnitList, { Unit } from "../components/UnitList";
 import UnitEditModal from "../components/UnitEditModal";
+import CreatePosologyForm from "../components/CreatePosologyForm";
+import PosologiesList, { Posology } from "../components/PosologiesList";
+import PosologyEditModal from "../components/PosologyEditModal";
 
 const CreateDrug = () => {
   const [activeTab, setActiveTab] = useState("drug");
@@ -26,6 +29,9 @@ const CreateDrug = () => {
 
   const [isEditUnitModalOpen, setIsEditUnitModalOpen] = useState(false);
   const [editingUnit, setEditingUnit] = useState<Unit | null>(null);
+
+  const [isEditPosologyModalOpen, setIsEditPosologyModalOpen] = useState(false);
+  const [editingPosology, setEditingPosology] = useState<Posology | null>(null);
 
   const handleEditClick = (drug: Drug) => {
     setEditingDrug(drug);
@@ -63,6 +69,17 @@ const CreateDrug = () => {
     setIsDeleteModalOpen(true);
   };
 
+  const handleEditPosologyClick = (posology: Posology) => {
+    setEditingPosology(posology);
+    setIsEditPosologyModalOpen(true);
+  };
+  const handleDeletePosologyClick = (posology: Posology) => {
+    setTabaleName("par_kg_jour");
+    setIdName("id");
+    setDeletingId(posology.id);
+    setIsDeleteModalOpen(true);
+  };
+
   return (
     <div className="mx-auto max-w-2xl">
       {/* Tabs */}
@@ -76,7 +93,7 @@ const CreateDrug = () => {
           }`}
         >
           <PackagePlus className="h-4 w-4" />
-          Ajouter un médicament
+          Médicament
         </button>
         <button
           onClick={() => setActiveTab("forme")}
@@ -87,7 +104,7 @@ const CreateDrug = () => {
           }`}
         >
           <Ratio className="h-4 w-4" />
-          Ajouter une forme
+          Forme
         </button>
         <button
           onClick={() => setActiveTab("unite")}
@@ -98,7 +115,18 @@ const CreateDrug = () => {
           }`}
         >
           <Calculator className="h-4 w-4" />
-          Ajouter une unité
+          Unité
+        </button>
+        <button
+          onClick={() => setActiveTab("posology")}
+          className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all duration-200 ${
+            activeTab === "posology"
+              ? "bg-white text-blue-600 shadow-md"
+              : "text-gray-600 hover:text-blue-600"
+          }`}
+        >
+          <Scale className="h-4 w-4" />
+          Posologie
         </button>
       </div>
 
@@ -132,7 +160,7 @@ const CreateDrug = () => {
               setEditingForme={setEditingForme}
             />
           </>
-        ) : (
+        ) : activeTab === "unite" ? (
           <>
             <CreateUnitForm />
             <UnitList
@@ -144,6 +172,20 @@ const CreateDrug = () => {
               setIsEditUnitModalOpen={setIsEditUnitModalOpen}
               editingUnit={editingUnit}
               setEditingUnit={setEditingUnit}
+            />
+          </>
+        ) : (
+          <>
+            <CreatePosologyForm />
+            <PosologiesList
+              handleEditPosologyClick={handleEditPosologyClick}
+              handleDeletePosologyClick={handleDeletePosologyClick}
+            />
+            <PosologyEditModal
+              isEditPosologyModalOpen={isEditPosologyModalOpen}
+              setIsEditPosologyModalOpen={setIsEditPosologyModalOpen}
+              editingPosology={editingPosology}
+              setEditingPosology={setEditingPosology}
             />
           </>
         )}
