@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AlertTriangle, Database } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import useDatabase from "../hooks/useDatabase";
 

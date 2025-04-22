@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Drug } from "./DrugList";
 import { X } from "lucide-react";
 import useDatabase from "../hooks/useDatabase";
-import { DataForm, FormeRow, UniteRow } from "./CreateDrugForm";
+import { FormeRow, UniteRow } from "./CreateDrugForm";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const DrugEditModal = ({
@@ -19,12 +19,7 @@ const DrugEditModal = ({
   const queryClient = useQueryClient();
   const { database } = useDatabase();
 
-  const {
-    isLoading: dataIsLoading,
-    isError,
-    error: err,
-    data,
-  } = useQuery({
+  const { data } = useQuery({
     queryKey: ["formes_unites"],
     enabled: !!database,
     queryFn: async () => {

@@ -1,11 +1,5 @@
 import { useState } from "react";
-import { Calculator, PackagePlus, Ratio } from "lucide-react";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useDatabase from "../hooks/useDatabase";
 
 export type DataForm = {
@@ -36,12 +30,7 @@ const CreateDrugForm = () => {
 
   const { database } = useDatabase();
 
-  const {
-    isLoading: dataIsLoading,
-    isError,
-    error: err,
-    data,
-  } = useQuery({
+  const { data } = useQuery({
     queryKey: ["formes_unites"],
     enabled: !!database,
     queryFn: async () => {

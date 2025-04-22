@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Home, PackagePlus } from "lucide-react";
 import SideBar from "./SideBar";
 import { Outlet } from "react-router";
-import { useQueryClient } from "@tanstack/react-query";
 
 const Layout = () => {
-  const queryClient = useQueryClient();
-
   const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   const menuItems = [
