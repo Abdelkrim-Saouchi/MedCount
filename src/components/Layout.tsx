@@ -22,7 +22,7 @@ const Layout = () => {
 
       {/* Main Content Area */}
       <div
-        className={`flex-1 p-8 transition-[margin] duration-300 ${isMenuOpen ? "ml-0 md:ml-[280px]" : "ml-0 md:ml-[70px]"}`}
+        className={`flex-1 p-8 transition-[margin] duration-300 ${isMenuOpen ? "ml-0 md:ml-[50px]" : "ml-0 md:ml-[10px]"}`}
       >
         <Outlet />
       </div>
