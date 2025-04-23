@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Drug } from "./DrugList";
-import { Clock, Pill, Search, Weight, X } from "lucide-react";
+import { Clock, Pill, PillBottle, Search, Weight, X } from "lucide-react";
 import useDatabase from "../hooks/useDatabase";
 import { useQuery } from "@tanstack/react-query";
 import { Posology } from "./PosologiesList";
@@ -16,6 +16,8 @@ const CalculateQuantity = () => {
     weight: "",
     duration: "",
     selectedPosology: "",
+    takeUnits: "",
+    eyeCount: "one",
   });
 
   const { database } = useDatabase();
@@ -66,28 +68,40 @@ const CalculateQuantity = () => {
 
   const handleQuantitySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      !selectedDrug ||
-      !quantityInputs.weight ||
-      !quantityInputs.duration ||
-      !quantityInputs.selectedPosology
-    )
-      return;
+    if (!selectedDrug || !quantityInputs.duration) return;
 
-    const weight = parseFloat(quantityInputs.weight);
     const duration = parseInt(quantityInputs.duration);
-    const dosagePerKg = parseFloat(quantityInputs.selectedPosology);
+    if (selectedDrug.forme_name == "sol. buv.") {
+      if (!quantityInputs.weight || !quantityInputs.selectedPosology) return;
+      const weight = parseFloat(quantityInputs.weight);
+      const dosagePerKg = parseFloat(quantityInputs.selectedPosology);
+      const drugCapacity = selectedDrug.capacity;
+
+      // Calculate total mg needed per day
+      const mgPerDay = weight * dosagePerKg;
+
+      // Calculate total mg needed for the entire duration
+      const totalMgNeeded = mgPerDay * duration;
+
+      // Calculate number of units needed
+      const unitsNeeded = totalMgNeeded / drugCapacity;
+
+      setCalculationResult(unitsNeeded);
+      return;
+    }
+    if (!quantityInputs.takeUnits) return;
+    const takeUnits = parseFloat(quantityInputs.takeUnits);
     const drugCapacity = selectedDrug.capacity;
 
-    // Calculate total mg needed per day
-    const mgPerDay = weight * dosagePerKg;
-
-    // Calculate total mg needed for the entire duration
-    const totalMgNeeded = mgPerDay * duration;
+    let eyeMultiplier = 1;
+    if (selectedDrug.forme_name == "collyres") {
+      if (!quantityInputs.eyeCount) return;
+      eyeMultiplier = quantityInputs.eyeCount === "two" ? 2 : 1;
+    }
 
     // Calculate number of units needed
-    const unitsNeeded = totalMgNeeded / drugCapacity;
-    console.log("unitsNeeded: ", unitsNeeded);
+    const unitsNeededForDuration = takeUnits * duration * eyeMultiplier;
+    const unitsNeeded = unitsNeededForDuration / drugCapacity;
 
     setCalculationResult(unitsNeeded);
   };
@@ -179,27 +193,100 @@ const CalculateQuantity = () => {
       )}
 
       {/* Weight Input */}
-      <div>
-        <label
-          htmlFor="weight"
-          className="mb-1 block text-sm font-medium text-gray-700"
-        >
-          Poids du patient (kg)
-        </label>
-        <div className="relative">
-          <input
-            type="number"
-            id="weight"
-            value={quantityInputs.weight}
-            onChange={(e) =>
-              setQuantityInputs({ ...quantityInputs, weight: e.target.value })
-            }
-            className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            placeholder="Entrer le poids du patient"
-          />
-          <Weight className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+      {selectedDrug?.forme_name == "sol. buv." && (
+        <div>
+          <label
+            htmlFor="weight"
+            className="mb-1 block text-sm font-medium text-gray-700"
+          >
+            Poids du patient (kg)
+          </label>
+          <div className="relative">
+            <input
+              type="number"
+              id="weight"
+              value={quantityInputs.weight}
+              onChange={(e) =>
+                setQuantityInputs({ ...quantityInputs, weight: e.target.value })
+              }
+              className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Entrer le poids du patient"
+            />
+            <Weight className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Eye Selection */}
+      {selectedDrug?.forme_name == "collyres" && (
+        <div>
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            Type de traitement
+          </label>
+          <div className="flex gap-4">
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="eyeCount"
+                value="one"
+                checked={quantityInputs.eyeCount === "one"}
+                onChange={(e) =>
+                  setQuantityInputs({
+                    ...quantityInputs,
+                    eyeCount: e.target.value,
+                  })
+                }
+                className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="ml-2 text-sm text-gray-700">Un oeil</span>
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="eyeCount"
+                value="two"
+                checked={quantityInputs.eyeCount === "two"}
+                onChange={(e) =>
+                  setQuantityInputs({
+                    ...quantityInputs,
+                    eyeCount: e.target.value,
+                  })
+                }
+                className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="ml-2 text-sm text-gray-700">Deux yeux</span>
+            </label>
+          </div>
+        </div>
+      )}
+
+      {/* Take units Input */}
+      {selectedDrug?.forme_name != "sol. buv." && (
+        <div>
+          <label
+            htmlFor="take_units"
+            className="mb-1 block text-sm font-medium text-gray-700"
+          >
+            Unités de prise par jour (gouttes, UI, mg)
+          </label>
+          <div className="relative">
+            <input
+              type="number"
+              id="take_units"
+              value={quantityInputs.takeUnits}
+              onChange={(e) =>
+                setQuantityInputs({
+                  ...quantityInputs,
+                  takeUnits: e.target.value,
+                })
+              }
+              className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Entrer l'unité de prise. Ex: 5"
+            />
+            <PillBottle className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          </div>
+        </div>
+      )}
 
       {/* Duration Input */}
       <div>
@@ -225,42 +312,45 @@ const CalculateQuantity = () => {
       </div>
 
       {/* Posology Selection */}
-      <div>
-        <label
-          htmlFor="posology"
-          className="mb-1 block text-sm font-medium text-gray-700"
-        >
-          Séléctionner la posologie
-        </label>
-        <select
-          id="posology"
-          value={quantityInputs.selectedPosology}
-          onChange={(e) =>
-            setQuantityInputs({
-              ...quantityInputs,
-              selectedPosology: e.target.value,
-            })
-          }
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        >
-          <option value="">Séléctionner la posologie par kg</option>
-          {filteredPosologies &&
-            filteredPosologies.map((option) => (
-              <option key={option.id} value={option.poso_par_kg}>
-                {option.poso_par_kg} {option.unit_name}/kg/j
-              </option>
-            ))}
-        </select>
-      </div>
+      {selectedDrug?.forme_name == "sol. buv." && (
+        <div>
+          <label
+            htmlFor="posology"
+            className="mb-1 block text-sm font-medium text-gray-700"
+          >
+            Séléctionner la posologie
+          </label>
+          <select
+            id="posology"
+            value={quantityInputs.selectedPosology}
+            onChange={(e) =>
+              setQuantityInputs({
+                ...quantityInputs,
+                selectedPosology: e.target.value,
+              })
+            }
+            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          >
+            <option value="">Séléctionner la posologie par kg</option>
+            {filteredPosologies &&
+              filteredPosologies.map((option) => (
+                <option key={option.id} value={option.poso_par_kg}>
+                  {option.poso_par_kg} {option.unit_name}/kg/j
+                </option>
+              ))}
+          </select>
+        </div>
+      )}
 
       {/* Calculate Button */}
       <button
         type="submit"
         disabled={
           !selectedDrug ||
-          !quantityInputs.weight ||
           !quantityInputs.duration ||
-          !quantityInputs.selectedPosology
+          selectedDrug.forme_name == "sol. buv."
+            ? !quantityInputs.weight || !quantityInputs.selectedPosology
+            : !quantityInputs.takeUnits
         }
         className="w-full rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
