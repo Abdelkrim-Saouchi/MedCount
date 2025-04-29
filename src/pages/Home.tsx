@@ -1,6 +1,7 @@
 import { Calculator } from "lucide-react";
 import { useState } from "react";
 import CalculateQuantity from "../components/CalculateQuantity";
+import CalculateDose from "../components/CalculateDose";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState("dose");
@@ -34,7 +35,7 @@ const Home = () => {
 
       {/* Tab Content */}
       <div className="rounded-xl bg-white p-6 shadow-md">
-        {activeTab === "dose" ? "Dose" : <CalculateQuantity />}
+        {activeTab === "dose" ? <CalculateDose /> : <CalculateQuantity />}
       </div>
     </div>
   );

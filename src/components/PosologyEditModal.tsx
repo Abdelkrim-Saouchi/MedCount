@@ -20,8 +20,14 @@ const PosologyEditModal = ({
     mutationFn: async (posology: Posology) => {
       try {
         await database?.execute(
-          "UPDATE par_kg_jour SET poso_par_kg = $1, fequence = $2 WHERE id = $3",
-          [posology.poso_par_kg, posology.frequence, posology.id],
+          "UPDATE par_kg_jour SET poso_par_kg = $1, fequence = $2, calculabe_ml= $3, mg_par_ml= $4 WHERE id = $5",
+          [
+            posology.poso_par_kg,
+            posology.frequence,
+            posology.isCalculable,
+            posology.mg_par_ml,
+            posology.id,
+          ],
         );
       } catch (error) {
         console.log("update forme failed ", error);
@@ -104,6 +110,61 @@ const PosologyEditModal = ({
               className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
+
+          {/* Claculable question */}
+          <div>
+            <label
+              htmlFor="isCalculable"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Calculable en ml ?
+            </label>
+            <select
+              id="isCalculable"
+              value={editingPosology?.isCalculable}
+              onChange={(e) => {
+                if (editingPosology) {
+                  setEditingPosology({
+                    ...editingPosology,
+                    isCalculable: parseInt(e.target.value),
+                  });
+                }
+              }}
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            >
+              <option value="1">Oui</option>
+              <option value="0">Non</option>
+            </select>
+          </div>
+
+          {/* mg in ml */}
+          {editingPosology.isCalculable == 1 && (
+            <div>
+              <label
+                htmlFor="mgInMl"
+                className="mb-1 block text-sm font-medium text-gray-700"
+              >
+                mg en ml
+              </label>
+              <input
+                type="number"
+                id="mgInMl"
+                value={editingPosology.mg_par_ml}
+                onChange={(e) => {
+                  if (editingPosology) {
+                    setEditingPosology({
+                      ...editingPosology,
+                      mg_par_ml: parseFloat(e.target.value),
+                    });
+                  }
+                }}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="Entrer mg/ml"
+                step="0.1"
+              />
+            </div>
+          )}
+
           <div className="flex gap-3 pt-4">
             <button
               type="button"

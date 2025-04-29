@@ -10,6 +10,8 @@ const CreatePosologyForm = () => {
   const [selectedDrug, setSelectedDrug] = useState<Drug | null>(null);
   const [unitPerKg, setUnitPerKg] = useState("");
   const [frequancy, setFrequancy] = useState(0);
+  const [isCalculable, setIsCalculable] = useState(0);
+  const [mgInMl, setMgInMl] = useState(0);
 
   const { database } = useDatabase();
   const { data: drugs } = useQuery({
@@ -41,8 +43,14 @@ const CreatePosologyForm = () => {
       }
       try {
         await database.execute(
-          "INSERT INTO par_kg_jour (medicament_id, poso_par_kg, fequence) VALUES ($1, $2, $3)",
-          [selectedDrug?.id, parseFloat(unitPerKg), frequancy],
+          "INSERT INTO par_kg_jour (medicament_id, poso_par_kg, fequence, calculabe_ml, mg_par_ml) VALUES ($1, $2, $3, $4, $5)",
+          [
+            selectedDrug?.id,
+            parseFloat(unitPerKg),
+            frequancy,
+            isCalculable,
+            mgInMl,
+          ],
         );
       } catch (error) {
         console.log("Insert posology failed!", error);
@@ -151,7 +159,7 @@ const CreatePosologyForm = () => {
           htmlFor="mgPerKg"
           className="mb-1 block text-sm font-medium text-gray-700"
         >
-          Unité par Kilograme
+          Unité par Kilograme par jour
         </label>
         <input
           type="number"
@@ -159,7 +167,7 @@ const CreatePosologyForm = () => {
           value={unitPerKg}
           onChange={(e) => setUnitPerKg(e.target.value)}
           className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          placeholder="Entrer unité/kg"
+          placeholder="Entrer unité/kg/j"
           step="0.1"
         />
       </div>
@@ -181,6 +189,46 @@ const CreatePosologyForm = () => {
           step="0.1"
         />
       </div>
+
+      {/* Claculable question */}
+      <div>
+        <label
+          htmlFor="isCalculable"
+          className="mb-1 block text-sm font-medium text-gray-700"
+        >
+          Calculable
+        </label>
+        <select
+          id="isCalculable"
+          value={isCalculable}
+          onChange={(e) => setIsCalculable(parseInt(e.target.value))}
+          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+          <option value="1">Oui</option>
+          <option value="0">Non</option>
+        </select>
+      </div>
+
+      {/* mg in ml */}
+      {isCalculable === 1 && (
+        <div>
+          <label
+            htmlFor="mgInMl"
+            className="mb-1 block text-sm font-medium text-gray-700"
+          >
+            mg en ml
+          </label>
+          <input
+            type="number"
+            id="mgInMl"
+            value={mgInMl}
+            onChange={(e) => setMgInMl(parseInt(e.target.value))}
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            placeholder="Entrer mg/ml"
+            step="0.1"
+          />
+        </div>
+      )}
 
       <button
         type="submit"
