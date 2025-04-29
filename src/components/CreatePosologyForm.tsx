@@ -9,6 +9,7 @@ const CreatePosologyForm = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDrug, setSelectedDrug] = useState<Drug | null>(null);
   const [unitPerKg, setUnitPerKg] = useState("");
+  const [frequancy, setFrequancy] = useState(0);
 
   const { database } = useDatabase();
   const { data: drugs } = useQuery({
@@ -40,8 +41,8 @@ const CreatePosologyForm = () => {
       }
       try {
         await database.execute(
-          "INSERT INTO par_kg_jour (medicament_id, poso_par_kg) VALUES ($1, $2)",
-          [selectedDrug?.id, parseFloat(unitPerKg)],
+          "INSERT INTO par_kg_jour (medicament_id, poso_par_kg, fequence) VALUES ($1, $2, $3)",
+          [selectedDrug?.id, parseFloat(unitPerKg), frequancy],
         );
       } catch (error) {
         console.log("Insert posology failed!", error);
@@ -52,6 +53,7 @@ const CreatePosologyForm = () => {
       queryClient.invalidateQueries();
       setSelectedDrug(null);
       setUnitPerKg("");
+      setFrequancy(0);
       setSearchTerm("");
     },
   });
@@ -161,10 +163,28 @@ const CreatePosologyForm = () => {
           step="0.1"
         />
       </div>
+      {/* frequancy Input */}
+      <div>
+        <label
+          htmlFor="frequancy"
+          className="mb-1 block text-sm font-medium text-gray-700"
+        >
+          Fréquence de prise
+        </label>
+        <input
+          type="number"
+          id="frequancy"
+          value={frequancy}
+          onChange={(e) => setFrequancy(parseInt(e.target.value))}
+          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Entrer unité/kg"
+          step="0.1"
+        />
+      </div>
 
       <button
         type="submit"
-        disabled={!selectedDrug || !unitPerKg}
+        disabled={!selectedDrug || !unitPerKg || !frequancy}
         className="w-full rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
         Créer

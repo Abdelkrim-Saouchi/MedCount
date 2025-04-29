@@ -12,6 +12,7 @@ export type Posology = {
   unite_id?: string;
   capacity: number;
   poso_par_kg: string;
+  frequence: number;
 };
 
 const PosologiesList = ({
@@ -31,7 +32,7 @@ const PosologiesList = ({
       }
       try {
         const result: Posology[] = await database.select(
-          "SELECT par_kg_jour.id AS id, medicaments.id AS medId, medicaments.nomination AS drug_name, formes.nomination AS forme_name, formes.forme_id AS forme_id, unites.nomination As unit_name, unites.unite_id AS unite_id, medicaments.capacite AS capacity, par_kg_jour.poso_par_kg AS poso_par_kg FROM medicaments INNER JOIN formes ON medicaments.forme = formes.forme_id INNER JOIN unites ON medicaments.unite = unites.unite_id INNER JOIN par_kg_jour ON medicaments.id = par_kg_jour.medicament_id",
+          "SELECT par_kg_jour.id AS id, medicaments.id AS medId, medicaments.nomination AS drug_name, formes.nomination AS forme_name, formes.forme_id AS forme_id, unites.nomination As unit_name, unites.unite_id AS unite_id, medicaments.capacite AS capacity, par_kg_jour.poso_par_kg AS poso_par_kg, par_kg_jour.fequence AS frequence FROM medicaments INNER JOIN formes ON medicaments.forme = formes.forme_id INNER JOIN unites ON medicaments.unite = unites.unite_id INNER JOIN par_kg_jour ON medicaments.id = par_kg_jour.medicament_id",
         );
         if (!result) {
           return [];
@@ -51,7 +52,7 @@ const PosologiesList = ({
         Liste des posologies disponibles
       </h2>
       <div className="overflow-hidden rounded-xl bg-white shadow-md">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-scroll">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
@@ -63,6 +64,9 @@ const PosologiesList = ({
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                   Posologie
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
+                  Fréquence
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                   Actions
@@ -89,6 +93,11 @@ const PosologiesList = ({
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
                         {posology.poso_par_kg} {posology.unit_name}/j
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        {posology.frequence}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm whitespace-nowrap text-gray-500">

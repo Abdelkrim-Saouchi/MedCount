@@ -20,8 +20,8 @@ const PosologyEditModal = ({
     mutationFn: async (posology: Posology) => {
       try {
         await database?.execute(
-          "UPDATE par_kg_jour SET poso_par_kg = $1 WHERE id = $2",
-          [posology.poso_par_kg, posology.id],
+          "UPDATE par_kg_jour SET poso_par_kg = $1, fequence = $2 WHERE id = $3",
+          [posology.poso_par_kg, posology.frequence, posology.id],
         );
       } catch (error) {
         console.log("update forme failed ", error);
@@ -65,7 +65,7 @@ const PosologyEditModal = ({
               htmlFor="edit-name"
               className="mb-1 block text-sm font-medium text-gray-700"
             >
-              Posologie
+              Posologie (mg, micg ...)
             </label>
             <input
               type="number"
@@ -76,6 +76,28 @@ const PosologyEditModal = ({
                   setEditingPosology({
                     ...editingPosology,
                     poso_par_kg: e.target.value,
+                  });
+                }
+              }}
+              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="edit-frequancy"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Fréquence (ex: 4 fois)
+            </label>
+            <input
+              type="number"
+              id="edit-frequancy"
+              value={editingPosology?.frequence}
+              onChange={(e) => {
+                if (editingPosology) {
+                  setEditingPosology({
+                    ...editingPosology,
+                    frequence: parseInt(e.target.value),
                   });
                 }
               }}
