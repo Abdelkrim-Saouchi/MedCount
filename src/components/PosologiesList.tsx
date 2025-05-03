@@ -54,9 +54,9 @@ const PosologiesList = ({
         Liste des posologies disponibles
       </h2>
       <div className="overflow-hidden rounded-xl bg-white shadow-md">
-        <div className="overflow-x-scroll">
+        <div className="h-[400px] overflow-x-scroll overflow-y-scroll">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="sticky top-0 bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                   Médicament
