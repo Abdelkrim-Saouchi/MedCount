@@ -95,7 +95,7 @@ const SideBar = ({
         <div className="border-t border-gray-100 p-4">
           <button
             onClick={() => setIsAuthenticated(false)}
-            className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-gray-600 transition-colors duration-150 hover:bg-gray-50"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-4 py-2 text-sm text-gray-600 transition-colors duration-150 hover:bg-gray-50"
           >
             <LogOut className="h-4 w-4 flex-shrink-0" />
             <span

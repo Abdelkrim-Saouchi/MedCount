@@ -18,7 +18,7 @@ const Home = () => {
           }`}
         >
           <Calculator className="h-4 w-4" />
-          Calculuer la dose
+          Calculer la dose
         </button>
         <button
           onClick={() => setActiveTab("quantity")}
