@@ -3,7 +3,13 @@ import { Home, PackagePlus } from "lucide-react";
 import SideBar from "./SideBar";
 import { Outlet } from "react-router";
 
-const Layout = () => {
+const Layout = ({
+  isAuthenticated,
+  setIsAuthenticated,
+}: {
+  isAuthenticated: boolean;
+  setIsAuthenticated: (value: boolean) => void;
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   const menuItems = [
@@ -18,6 +24,8 @@ const Layout = () => {
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         menuItems={menuItems}
+        isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated}
       />
 
       {/* Main Content Area */}
