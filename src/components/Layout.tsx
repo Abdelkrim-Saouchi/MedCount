@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Home, PackagePlus } from "lucide-react";
 import SideBar from "./SideBar";
 import { Outlet } from "react-router";
@@ -8,7 +8,7 @@ const Layout = ({
   setIsAuthenticated,
 }: {
   isAuthenticated: boolean;
-  setIsAuthenticated: (value: boolean) => void;
+  setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
 
@@ -18,7 +18,7 @@ const Layout = ({
   ];
 
   return (
-    <div className="flex h-screen bg-[#f3f3f3]">
+    <div className="flex min-h-dvh bg-[#f3f3f3]">
       {/* Side Menu */}
       <SideBar
         isMenuOpen={isMenuOpen}

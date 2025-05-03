@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { Settings, Layers, LucideProps, LogOut } from "lucide-react";
+import { Layers, LucideProps, LogOut } from "lucide-react";
 import { NavLink } from "react-router";
 
 type MenuItems = {
@@ -25,7 +25,7 @@ const SideBar = ({
 }) => {
   return (
     <div
-      className={`fixed z-40 flex h-full flex-col bg-white shadow-lg transition-all duration-300 md:static ${isMenuOpen ? "w-[280px]" : "w-[70px]"} ${isMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+      className={`fixed top-0 left-0 z-40 flex h-full flex-col bg-white shadow-lg transition-all duration-300 md:fixed ${isMenuOpen ? "w-[280px]" : "w-[70px]"} ${isMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
     >
       {/* App Logo */}
       <div className="border-b border-gray-100 p-4">
