@@ -13,7 +13,7 @@ const Layout = ({
   const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   const menuItems = [
-    { path: "/", icon: Home, label: "Home" },
+    { path: "/", icon: Home, label: "Calculer" },
     { path: "/create_drug", icon: PackagePlus, label: "Ajouter" },
   ];
 
