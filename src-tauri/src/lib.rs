@@ -1,3 +1,7 @@
+use tauri::{
+    menu::{Menu, MenuItem},
+    tray::TrayIconBuilder,
+};
 use tauri_plugin_sql::{Migration, MigrationKind};
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -13,13 +17,13 @@ pub fn run() {
         Migration {
             version: 1,
             description: "create_initial_tables",
-            sql: "CREATE TABLE formes (forme_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nomination TEXT NOT NULL)", 
+            sql: "CREATE TABLE formes (forme_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nomination TEXT NOT NULL)",
             kind: MigrationKind::Up,
         },
         Migration {
             version: 2,
             description: "create_initial_tables",
-            sql: "CREATE TABLE unites (unite_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nomination TEXT NOT NULL)", 
+            sql: "CREATE TABLE unites (unite_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nomination TEXT NOT NULL)",
             kind: MigrationKind::Up,
         },
         Migration {
@@ -31,6 +35,17 @@ pub fn run() {
     ];
 
     tauri::Builder::default()
+        .setup(|app| {
+            let quit_i = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
+            let menu = Menu::with_items(app, &[&quit_i])?;
+            let _tray = TrayIconBuilder::new()
+                .icon(app.default_window_icon().unwrap().clone())
+                .menu(&menu)
+                .show_menu_on_left_click(true)
+                .build(app)?;
+
+            Ok(())
+        })
         .plugin(
             tauri_plugin_sql::Builder::new()
                 .add_migrations("sqlite:test.db", migrations)
