@@ -259,7 +259,7 @@ const CalculateDose = () => {
       {/* Calculation Result */}
       {calculationResult && (
         <div className="mt-4 rounded-lg border border-green-100 bg-green-50 p-4">
-          <p className="text-sm font-medium text-green-800">
+          <p className="text-lg font-medium text-green-800">
             <p>Résultat: {calculationResult.toFixed(2)}</p>
             <p className="font-bold">
               le patient a besoin de {calculationResult.toFixed(2)} ml par jour
