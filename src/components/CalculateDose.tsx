@@ -1,4 +1,4 @@
-import { Clock, Pill, PillBottle, Search, Weight, X } from "lucide-react";
+import { Pill, Search, Weight, X } from "lucide-react";
 import { useState } from "react";
 import { Drug } from "./DrugList";
 import useDatabase from "../hooks/useDatabase";
