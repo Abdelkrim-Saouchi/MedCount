@@ -12,7 +12,6 @@ const CalculateQuantity = () => {
   const [calculationResult, setCalculationResult] = useState<number | null>(
     null,
   );
-  console.log("calculationResult: ", calculationResult);
   const [quantityInputs, setQuantityInputs] = useState({
     weight: "",
     duration: "",
