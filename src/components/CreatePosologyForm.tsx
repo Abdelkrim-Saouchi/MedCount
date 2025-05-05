@@ -9,9 +9,9 @@ const CreatePosologyForm = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDrug, setSelectedDrug] = useState<Drug | null>(null);
   const [unitPerKg, setUnitPerKg] = useState("");
-  const [frequancy, setFrequancy] = useState(0);
+  const [frequancy, setFrequancy] = useState("0");
   const [isCalculable, setIsCalculable] = useState(0);
-  const [mgInMl, setMgInMl] = useState(0);
+  const [mgInMl, setMgInMl] = useState("0");
 
   const { database } = useDatabase();
   const { data: drugs } = useQuery({
@@ -42,14 +42,16 @@ const CreatePosologyForm = () => {
         throw new Error("Database connection not available");
       }
       try {
+        const frequancyInNumber = parseInt(frequancy) || 0;
+        const mgInMlInNumber = parseInt(mgInMl) || 0;
         await database.execute(
           "INSERT INTO par_kg_jour (medicament_id, poso_par_kg, fequence, calculabe_ml, mg_par_ml) VALUES ($1, $2, $3, $4, $5)",
           [
             selectedDrug?.id,
             parseFloat(unitPerKg),
-            frequancy,
+            frequancyInNumber,
             isCalculable,
-            mgInMl,
+            mgInMlInNumber,
           ],
         );
       } catch (error) {
@@ -61,7 +63,7 @@ const CreatePosologyForm = () => {
       queryClient.invalidateQueries();
       setSelectedDrug(null);
       setUnitPerKg("");
-      setFrequancy(0);
+      setFrequancy("0");
       setSearchTerm("");
     },
   });
@@ -183,7 +185,7 @@ const CreatePosologyForm = () => {
           type="number"
           id="frequancy"
           value={frequancy}
-          onChange={(e) => setFrequancy(parseInt(e.target.value))}
+          onChange={(e) => setFrequancy(e.target.value)}
           className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
           placeholder="Entrer unité/kg"
           step="0.1"
@@ -219,13 +221,12 @@ const CreatePosologyForm = () => {
             mg en ml
           </label>
           <input
-            type="number"
+            type="text"
             id="mgInMl"
             value={mgInMl}
-            onChange={(e) => setMgInMl(parseInt(e.target.value))}
+            onChange={(e) => setMgInMl(e.target.value)}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="Entrer mg/ml"
-            step="0.1"
           />
         </div>
       )}

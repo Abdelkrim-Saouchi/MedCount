@@ -39,7 +39,6 @@ const PosologiesList = ({
         if (!result) {
           return [];
         }
-        console.log(result);
         return result;
       } catch (error) {
         console.log("Fetch druglist failed!", error);
