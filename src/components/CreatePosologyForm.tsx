@@ -3,6 +3,7 @@ import { Drug } from "./DrugList";
 import { Pill, Search, X } from "lucide-react";
 import useDatabase from "../hooks/useDatabase";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useError } from "../context/ErrorContext";
 
 const CreatePosologyForm = () => {
   const queryClient = useQueryClient();
@@ -14,11 +15,13 @@ const CreatePosologyForm = () => {
   const [mgInMl, setMgInMl] = useState("0");
 
   const { database } = useDatabase();
+  const { showError } = useError();
   const { data: drugs } = useQuery({
     queryKey: ["drugsList"],
     enabled: !!database,
     queryFn: async () => {
       if (!database) {
+        showError("Database connection not available");
         throw new Error("Database connection not available");
       }
       try {
@@ -30,7 +33,9 @@ const CreatePosologyForm = () => {
         }
         return result;
       } catch (error) {
-        console.log("Fetch druglist failed!", error);
+        showError(
+          `Erreur lors de la récupération de la liste des médicaments: ${error}`,
+        );
         throw new Error("Failed to fetch drug list");
       }
     },
@@ -39,6 +44,7 @@ const CreatePosologyForm = () => {
   const mutation = useMutation({
     mutationFn: async () => {
       if (!database) {
+        showError("Database connection not available");
         throw new Error("Database connection not available");
       }
       try {
@@ -55,7 +61,7 @@ const CreatePosologyForm = () => {
           ],
         );
       } catch (error) {
-        console.log("Insert posology failed!", error);
+        showError(`Erreur lors de l'insertion de la posologie: ${error}`);
         throw new Error("Failed to insert posology");
       }
     },

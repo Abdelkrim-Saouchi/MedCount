@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import useDatabase from "../hooks/useDatabase";
 import { FormeRow, UniteRow } from "./CreateDrugForm";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useError } from "../context/ErrorContext";
 
 const DrugEditModal = ({
   isEditModalOpen,
@@ -18,6 +19,7 @@ const DrugEditModal = ({
 }) => {
   const queryClient = useQueryClient();
   const { database } = useDatabase();
+  const { showError } = useError();
 
   const { data } = useQuery({
     queryKey: ["formes_unites"],
@@ -54,7 +56,7 @@ const DrugEditModal = ({
           ],
         );
       } catch (error) {
-        console.log("Create Drug failed", error);
+        showError(`Erreur lors de la mise à jour du médicament: ${error}`);
       }
     },
     onSuccess: () => {

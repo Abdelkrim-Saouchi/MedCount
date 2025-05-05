@@ -3,6 +3,7 @@ import { Forme } from "./FormeList";
 import { X } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useDatabase from "../hooks/useDatabase";
+import { useError } from "../context/ErrorContext";
 
 const FormeEditModal = ({
   isEditFormeModalOpen,
@@ -17,6 +18,7 @@ const FormeEditModal = ({
 }) => {
   const queryClient = useQueryClient();
   const { database } = useDatabase();
+  const { showError } = useError();
   const mutation = useMutation({
     mutationFn: async (forme: Forme) => {
       try {
@@ -25,7 +27,7 @@ const FormeEditModal = ({
           [forme.nomination, forme.forme_id],
         );
       } catch (error) {
-        console.log("update forme failed ", error);
+        showError(`Erreur lors de la mise à jour de la forme: ${error}`);
       }
     },
     onSuccess: () => {

@@ -4,6 +4,7 @@ import { Drug } from "./DrugList";
 import useDatabase from "../hooks/useDatabase";
 import { useQuery } from "@tanstack/react-query";
 import { Posology } from "./PosologiesList";
+import { useError } from "../context/ErrorContext";
 
 const CalculateDose = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,11 +20,13 @@ const CalculateDose = () => {
   });
 
   const { database } = useDatabase();
+  const { showError } = useError();
   const { data: drugs } = useQuery({
     queryKey: ["drugsList"],
     enabled: !!database,
     queryFn: async () => {
       if (!database) {
+        showError("Database connection not available");
         throw new Error("Database connection not available");
       }
       try {
@@ -35,7 +38,7 @@ const CalculateDose = () => {
         }
         return result;
       } catch (error) {
-        console.log("Fetch druglist failed!", error);
+        showError(`L'obtention des médicaments a échoué: ${error}`);
         throw new Error("Failed to fetch drug list");
       }
     },
@@ -46,6 +49,7 @@ const CalculateDose = () => {
     enabled: !!database,
     queryFn: async () => {
       if (!database) {
+        showError("Database connection not available");
         throw new Error("Database connection not available");
       }
       try {
@@ -55,10 +59,9 @@ const CalculateDose = () => {
         if (!result) {
           return [];
         }
-        console.log("posologiesInMl:", result);
         return result;
       } catch (error) {
-        console.log("Fetch druglist failed!", error);
+        showError(`L'obtenir de la liste des posologies a échoué: ${error}`);
         throw new Error("Failed to fetch drug list");
       }
     },

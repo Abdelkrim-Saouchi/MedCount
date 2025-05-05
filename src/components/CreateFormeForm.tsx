@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import useDatabase from "../hooks/useDatabase";
+import { useError } from "../context/ErrorContext";
 
 const CreateFormeForm = () => {
   const queryClient = useQueryClient();
   const [formeName, setFormeName] = useState("");
   const { database } = useDatabase();
+  const { showError } = useError();
 
   const mutation = useMutation({
     mutationFn: async (data: string) => {
@@ -14,7 +16,7 @@ const CreateFormeForm = () => {
           data,
         ]);
       } catch (error) {
-        console.log("Create Drug failed", error);
+        showError(`la création de la forme a échoué: ${error}`);
       }
     },
     onSuccess: () => {

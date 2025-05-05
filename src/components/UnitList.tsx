@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useDatabase from "../hooks/useDatabase";
 import { Edit, Pill, Trash2 } from "lucide-react";
+import { useError } from "../context/ErrorContext";
 
 export type Unit = {
   unite_id: string;
@@ -15,6 +16,7 @@ const UnitList = ({
   handleEditUnitClick: (unit: Unit) => void;
 }) => {
   const { database } = useDatabase();
+  const { showError } = useError();
   const { data: units } = useQuery({
     queryKey: ["unitsList"],
     enabled: !!database,
@@ -24,7 +26,9 @@ const UnitList = ({
           const result: Unit[] = await database.select("SELECT * FROM unites");
           return result;
         } catch (error) {
-          console.log("Fetch units failed!");
+          showError(
+            `L'erreur est survenue lors de la récupération des unités: ${error}`,
+          );
         }
       }
     },

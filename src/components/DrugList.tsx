@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Edit, Pill, Trash2 } from "lucide-react";
 import useDatabase from "../hooks/useDatabase";
+import { useError } from "../context/ErrorContext";
 
 export type Drug = {
   id: string;
@@ -20,11 +21,13 @@ const DrugList = ({
   handleDeleteClick: (drug: Drug) => void;
 }) => {
   const { database } = useDatabase();
+  const { showError } = useError();
   const { data: drugs } = useQuery({
     queryKey: ["drugsList"],
     enabled: !!database,
     queryFn: async () => {
       if (!database) {
+        showError("la base de données n'est pas disponible");
         throw new Error("Database connection not available");
       }
       try {
@@ -36,7 +39,9 @@ const DrugList = ({
         }
         return result;
       } catch (error) {
-        console.log("Fetch druglist failed!", error);
+        showError(
+          `la récupération de la liste des médicaments a échoué: ${error}`,
+        );
         throw new Error("Failed to fetch drug list");
       }
     },

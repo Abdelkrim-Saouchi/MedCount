@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useDatabase from "../hooks/useDatabase";
 import { Edit, Pill, Trash2 } from "lucide-react";
+import { useError } from "../context/ErrorContext";
 
 export type Forme = {
   forme_id: string;
@@ -15,6 +16,8 @@ const FormeList = ({
   handleEditFormeClick: (forme: Forme) => void;
 }) => {
   const { database } = useDatabase();
+  const { showError } = useError();
+
   const { data: formes } = useQuery({
     queryKey: ["formesList"],
     enabled: !!database,
@@ -24,7 +27,7 @@ const FormeList = ({
           const result: Forme[] = await database.select("SELECT * FROM formes");
           return result;
         } catch (error) {
-          console.log("Fetch formes failed!");
+          showError(`obtention des formes échouée: ${error}`);
         }
       }
     },

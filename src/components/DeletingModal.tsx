@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AlertTriangle } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import useDatabase from "../hooks/useDatabase";
+import { useError } from "../context/ErrorContext";
 
 const DeletingModal = ({
   isDeleteModalOpen,
@@ -20,6 +21,7 @@ const DeletingModal = ({
 }) => {
   const queryClient = useQueryClient();
   const { database } = useDatabase();
+  const { showError } = useError();
   const mutation = useMutation({
     mutationFn: async () => {
       try {
@@ -28,7 +30,7 @@ const DeletingModal = ({
           [deletingId],
         );
       } catch (error) {
-        console.log("deleting failed! ", error);
+        showError(`La delétion a échoué: ${error}`);
       }
     },
     onSuccess: () => {

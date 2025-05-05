@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useDatabase from "../hooks/useDatabase";
 import { Unit } from "./UnitList";
 import { X } from "lucide-react";
+import { useError } from "../context/ErrorContext";
 
 const UnitEditModal = ({
   isEditUnitModalOpen,
@@ -16,6 +17,7 @@ const UnitEditModal = ({
 }) => {
   const queryClient = useQueryClient();
   const { database } = useDatabase();
+  const { showError } = useError();
   const mutation = useMutation({
     mutationFn: async (unit: Unit) => {
       try {
@@ -24,7 +26,7 @@ const UnitEditModal = ({
           [unit.nomination, unit.unite_id],
         );
       } catch (error) {
-        console.log("update forme failed ", error);
+        showError(`Erreur lors de la mise à jour de l'unité: ${error}`);
       }
     },
     onSuccess: () => {

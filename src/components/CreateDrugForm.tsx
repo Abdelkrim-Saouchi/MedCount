@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useDatabase from "../hooks/useDatabase";
+import { useError } from "../context/ErrorContext";
 
 export type DataForm = {
   formeId: String | null;
@@ -29,6 +30,7 @@ const CreateDrugForm = () => {
   });
 
   const { database } = useDatabase();
+  const { showError } = useError();
 
   const { data } = useQuery({
     queryKey: ["formes_unites"],
@@ -59,7 +61,7 @@ const CreateDrugForm = () => {
           [data.nomination, data.capacité, data.formeId, data.unitéId],
         );
       } catch (error) {
-        console.log("Create Drug failed", error);
+        showError(`la création du médicament a échoué: ${error}`);
       }
     },
     onSuccess: () => {

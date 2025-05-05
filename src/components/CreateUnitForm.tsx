@@ -1,11 +1,13 @@
 import { useState } from "react";
 import useDatabase from "../hooks/useDatabase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useError } from "../context/ErrorContext";
 
 const CreateUnitForm = () => {
   const queryClient = useQueryClient();
   const [unitName, setUnitName] = useState("");
   const { database } = useDatabase();
+  const { showError } = useError();
 
   const mutation = useMutation({
     mutationFn: async (data: string) => {
@@ -14,7 +16,7 @@ const CreateUnitForm = () => {
           data,
         ]);
       } catch (error) {
-        console.log("Create unit failed", error);
+        showError(`L'unité ${data} n'a pas pu être créée: ${error}`);
       }
     },
     onSuccess: () => {

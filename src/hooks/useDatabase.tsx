@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import Database from "@tauri-apps/plugin-sql";
+import { useError } from "../context/ErrorContext";
 
 const useDatabase = () => {
   const [database, setDatabase] = useState<Database | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<unknown | null>(null);
+  const { showError } = useError();
 
   useEffect(() => {
     let database: Database | null = null;
@@ -12,7 +13,6 @@ const useDatabase = () => {
 
     const connectToDatabase = async () => {
       setIsLoading(true);
-      setError(null);
       try {
         database = await Database.load("sqlite:test.db");
         if (isMounted) {
@@ -20,7 +20,7 @@ const useDatabase = () => {
         }
       } catch (error) {
         if (isMounted) {
-          setError(error);
+          showError("Erreur de connexion à la base de données");
           setDatabase(null);
         }
       } finally {
@@ -39,12 +39,11 @@ const useDatabase = () => {
         database.close();
       }
     };
-  }, []);
+  }, [showError]);
 
   return {
     database,
     isLoading,
-    error,
   };
 };
 

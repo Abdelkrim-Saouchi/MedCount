@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import ErrorModal from "./ErrorModal";
+import { useError } from "../context/ErrorContext";
 
 const Login = ({
   setAuthenticated,
@@ -10,7 +10,8 @@ const Login = ({
     username: "",
     password: "",
   });
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+
+  const { showError } = useError();
 
   const hardcodedUsername = "admin";
   const hardcodedPassword = "123";
@@ -25,7 +26,7 @@ const Login = ({
     ) {
       setAuthenticated(true);
     } else {
-      setIsErrorModalOpen(true);
+      showError("Nom d'utilisateur ou mot de passe incorrect");
     }
   };
 
@@ -85,7 +86,6 @@ const Login = ({
           </form>
         </div>
       </div>
-      <ErrorModal isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} />
     </>
   );
 };

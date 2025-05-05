@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useDatabase from "../hooks/useDatabase";
 import { Posology } from "./PosologiesList";
 import { X } from "lucide-react";
+import { useError } from "../context/ErrorContext";
 
 const PosologyEditModal = ({
   isEditPosologyModalOpen,
@@ -16,6 +17,7 @@ const PosologyEditModal = ({
 }) => {
   const queryClient = useQueryClient();
   const { database } = useDatabase();
+  const { showError } = useError();
   const mutation = useMutation({
     mutationFn: async (posology: Posology) => {
       try {
@@ -30,7 +32,7 @@ const PosologyEditModal = ({
           ],
         );
       } catch (error) {
-        console.log("update forme failed ", error);
+        showError(`la mise à jour de la posologie a échoué: ${error}`);
       }
     },
     onSuccess: () => {

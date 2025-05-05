@@ -6,37 +6,42 @@ import Home from "./pages/Home";
 import CreateDrug from "./pages/CreateDrug";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useState } from "react";
+import { ErrorProvider } from "./context/ErrorContext";
+import ErrorModal from "./components/ErrorModal";
 
 const queryClient = new QueryClient();
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
-    <QueryClientProvider client={queryClient}>
-      <Routes>
-        <Route
-          element={
-            <Layout
-              isAuthenticated={isAuthenticated}
-              setIsAuthenticated={setIsAuthenticated}
-            />
-          }
-        >
-          <Route index element={<Home />} />
-          <Route path="/" element={<Home />} />
+    <ErrorProvider>
+      <QueryClientProvider client={queryClient}>
+        <Routes>
           <Route
             element={
-              <ProtectedRoute
+              <Layout
                 isAuthenticated={isAuthenticated}
                 setIsAuthenticated={setIsAuthenticated}
               />
             }
           >
-            <Route path="/create_drug" element={<CreateDrug />} />
+            <Route index element={<Home />} />
+            <Route path="/" element={<Home />} />
+            <Route
+              element={
+                <ProtectedRoute
+                  isAuthenticated={isAuthenticated}
+                  setIsAuthenticated={setIsAuthenticated}
+                />
+              }
+            >
+              <Route path="/create_drug" element={<CreateDrug />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </QueryClientProvider>
+        </Routes>
+        <ErrorModal />
+      </QueryClientProvider>
+    </ErrorProvider>
   );
 }
 
