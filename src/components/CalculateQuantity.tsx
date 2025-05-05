@@ -4,6 +4,7 @@ import { Clock, Pill, PillBottle, Search, Weight, X } from "lucide-react";
 import useDatabase from "../hooks/useDatabase";
 import { useQuery } from "@tanstack/react-query";
 import { Posology } from "./PosologiesList";
+import { useError } from "../context/ErrorContext";
 
 const CalculateQuantity = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,11 +22,13 @@ const CalculateQuantity = () => {
   });
 
   const { database } = useDatabase();
+  const { showError } = useError();
   const { data: drugs } = useQuery({
     queryKey: ["drugsList"],
     enabled: !!database,
     queryFn: async () => {
       if (!database) {
+        showError("Database connection not available");
         throw new Error("Database connection not available");
       }
       try {
@@ -37,7 +40,9 @@ const CalculateQuantity = () => {
         }
         return result;
       } catch (error) {
-        console.log("Fetch druglist failed!", error);
+        showError(
+          `L'erreur est survenue lors de la récupération de la liste des médicaments: ${error}`,
+        );
         throw new Error("Failed to fetch drug list");
       }
     },
@@ -48,6 +53,7 @@ const CalculateQuantity = () => {
     enabled: !!database,
     queryFn: async () => {
       if (!database) {
+        showError("Database connection not available");
         throw new Error("Database connection not available");
       }
       try {
@@ -57,10 +63,11 @@ const CalculateQuantity = () => {
         if (!result) {
           return [];
         }
-        console.log(result);
         return result;
       } catch (error) {
-        console.log("Fetch druglist failed!", error);
+        showError(
+          `L'erreur est survenue lors de la récupération de la liste des médicaments: ${error}`,
+        );
         throw new Error("Failed to fetch drug list");
       }
     },
