@@ -368,7 +368,7 @@ const CalculateQuantity = () => {
       </button>
 
       {/* Calculation Result */}
-      {calculationResult && (
+      {calculationResult && selectedDrug && (
         <div className="mt-4 rounded-lg border border-green-100 bg-green-50/70 p-4">
           <p className="text-lg font-medium text-green-800">
             <p>Résultat: {calculationResult.toFixed(2)}</p>
