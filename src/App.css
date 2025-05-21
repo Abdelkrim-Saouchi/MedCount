@@ -1,1 +1,45 @@
 @import "tailwindcss";
+
+/* Base styling */
+html,
+body {
+  background-color: var(--soft-bg);
+}
+
+.background {
+  background-image: url("./assets/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* Custom colors */
+:root {
+  --soft-bg: #f5f8fa;
+  --content-bg: #f9f7f4;
+  --sidebar-bg: #f0f4f8;
+  --active-tab: #e8f0fe;
+  --tab-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --tab-bg: rgba(219, 234, 254, 0.7);
+}
+
+/* Sticky tab styles */
+.sticky-tabs {
+  position: sticky;
+  top: 0.75rem;
+  z-index: 20;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  border-radius: 0.75rem;
+  background-color: var(--tab-bg);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--tab-shadow);
+  transition: all 0.3s ease;
+}
+
+.sticky-tabs.scrolled {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  top: 0.5rem;
+}

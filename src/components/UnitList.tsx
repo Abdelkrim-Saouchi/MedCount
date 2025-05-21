@@ -38,10 +38,10 @@ const UnitList = ({
       <h2 className="mb-4 text-lg font-semibold text-gray-800">
         Liste des unités disponibles
       </h2>
-      <div className="overflow-hidden rounded-xl bg-white shadow-md">
+      <div className="overflow-hidden rounded-xl bg-[var(--content-bg)] shadow-md">
         <div className="overlflow-y-scroll h-[400px] overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="sticky top-0 bg-gray-50">
+            <thead className="sticky top-0 bg-gray-100/80">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                   Unité
@@ -51,7 +51,7 @@ const UnitList = ({
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
+            <tbody className="divide-y divide-gray-200 bg-[var(--content-bg)]">
               {units &&
                 units.map((unit) => (
                   <tr key={unit.unite_id} className="hover:bg-gray-50">

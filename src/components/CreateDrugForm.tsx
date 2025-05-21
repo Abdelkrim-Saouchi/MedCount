@@ -107,7 +107,7 @@ const CreateDrugForm = () => {
           onChange={(e) =>
             setFormInputs({ ...formInputs, forme: e.target.value })
           }
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           <option value="">Sélectionner une forme</option>
           {data?.formeRows.map((forme) => (
@@ -131,7 +131,7 @@ const CreateDrugForm = () => {
           onChange={(e) =>
             setFormInputs({ ...formInputs, drugName: e.target.value })
           }
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
           placeholder="Ex: Doliprane 500"
         />
       </div>
@@ -148,7 +148,7 @@ const CreateDrugForm = () => {
           onChange={(e) =>
             setFormInputs({ ...formInputs, unit: e.target.value })
           }
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           <option value="">Sélectionner un unité</option>
           {data?.uniteRows.map((unit) => (
@@ -172,7 +172,7 @@ const CreateDrugForm = () => {
           onChange={(e) =>
             setFormInputs({ ...formInputs, capacity: e.target.value })
           }
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
           placeholder="Ex: 2000"
         />
       </div>

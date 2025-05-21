@@ -1,19 +1,34 @@
 import { Calculator } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import CalculateQuantity from "../components/CalculateQuantity";
 import CalculateDose from "../components/CalculateDose";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState("dose");
+  const [isScrolled, setIsScrolled] = useState(false);
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (tabsRef.current) {
+        const scrollPosition = window.scrollY;
+        setIsScrolled(scrollPosition > 10);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto max-w-2xl pt-4">
       {/* Tabs */}
-      <div className="mb-6 flex space-x-1 rounded-xl bg-blue-100/50 p-1">
+      <div ref={tabsRef} className={`sticky-tabs flex space-x-1 ${isScrolled ? 'scrolled' : ''}`}>
         <button
           onClick={() => setActiveTab("dose")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all duration-200 ${
             activeTab === "dose"
-              ? "bg-white text-blue-600 shadow-md"
+              ? "bg-[var(--active-tab)] text-blue-600 shadow-md"
               : "text-gray-600 hover:text-blue-600"
           }`}
         >
@@ -24,7 +39,7 @@ const Home = () => {
           onClick={() => setActiveTab("quantity")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all duration-200 ${
             activeTab === "quantity"
-              ? "bg-white text-blue-600 shadow-md"
+              ? "bg-[var(--active-tab)] text-blue-600 shadow-md"
               : "text-gray-600 hover:text-blue-600"
           }`}
         >
@@ -34,7 +49,7 @@ const Home = () => {
       </div>
 
       {/* Tab Content */}
-      <div className="rounded-xl bg-white p-6 shadow-md">
+      <div className="rounded-xl bg-[var(--content-bg)] p-6 shadow-md">
         {activeTab === "dose" ? <CalculateDose /> : <CalculateQuantity />}
       </div>
     </div>

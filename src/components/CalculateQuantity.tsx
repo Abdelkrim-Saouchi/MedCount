@@ -141,7 +141,7 @@ const CalculateQuantity = () => {
             id="search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="Rechercher un médicament..."
           />
           <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -149,7 +149,7 @@ const CalculateQuantity = () => {
 
         {/* Search Results */}
         {searchTerm && filteredDrugs.length > 0 && !selectedDrug && (
-          <div className="absolute z-10 mt-1 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
+          <div className="absolute z-10 mt-1 w-full rounded-lg border border-gray-200 bg-[var(--content-bg)] shadow-lg">
             {filteredDrugs.map((drug) => (
               <button
                 key={drug.id}
@@ -173,7 +173,7 @@ const CalculateQuantity = () => {
 
       {/* Selected Drug Info */}
       {selectedDrug && (
-        <div className="flex items-center justify-between rounded-lg bg-blue-50 p-4">
+        <div className="flex items-center justify-between rounded-lg bg-blue-100/30 p-4">
           <div className="flex items-center gap-2">
             <Pill className="h-5 w-5 text-blue-500" />
             <div>
@@ -215,7 +215,7 @@ const CalculateQuantity = () => {
               onChange={(e) =>
                 setQuantityInputs({ ...quantityInputs, weight: e.target.value })
               }
-              className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="Entrer le poids du patient"
             />
             <Weight className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -286,7 +286,7 @@ const CalculateQuantity = () => {
                   takeUnits: e.target.value,
                 })
               }
-              className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="Entrer l'unité de prise. Ex: 5"
             />
             <PillBottle className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -310,7 +310,7 @@ const CalculateQuantity = () => {
             onChange={(e) =>
               setQuantityInputs({ ...quantityInputs, duration: e.target.value })
             }
-            className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="Entrer la durée du traitement"
           />
           <Clock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -335,7 +335,7 @@ const CalculateQuantity = () => {
                 selectedPosology: e.target.value,
               })
             }
-            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
           >
             <option value="">Séléctionner la posologie par kg</option>
             {filteredPosologies &&
@@ -365,7 +365,7 @@ const CalculateQuantity = () => {
 
       {/* Calculation Result */}
       {calculationResult && (
-        <div className="mt-4 rounded-lg border border-green-100 bg-green-50 p-4">
+        <div className="mt-4 rounded-lg border border-green-100 bg-green-50/70 p-4">
           <p className="text-lg font-medium text-green-800">
             <p>Résultat: {calculationResult.toFixed(2)}</p>
             <p className="font-bold">

@@ -47,7 +47,7 @@ const FormeEditModal = ({
   if (!isEditFormeModalOpen || !editingForme) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="mx-4 w-full max-w-md rounded-xl bg-white shadow-lg">
+      <div className="mx-4 w-full max-w-md rounded-xl bg-[var(--content-bg)] shadow-lg">
         <div className="flex items-center justify-between border-b border-gray-100 p-6">
           <h3 className="text-lg font-semibold text-gray-800">
             Modifer La forme
@@ -82,7 +82,7 @@ const FormeEditModal = ({
                   });
                 }
               }}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
           <div className="flex gap-3 pt-4">

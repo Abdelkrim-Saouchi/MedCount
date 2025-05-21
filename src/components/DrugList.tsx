@@ -52,10 +52,10 @@ const DrugList = ({
       <h2 className="mb-4 text-lg font-semibold text-gray-800">
         Liste des Médicaments disponibles
       </h2>
-      <div className="overflow-hidden rounded-xl bg-white shadow-md">
+      <div className="overflow-hidden rounded-xl bg-[var(--content-bg)] shadow-md">
         <div className="h-[400px] overflow-x-auto overflow-y-scroll">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="sticky top-0 bg-gray-50">
+            <thead className="sticky top-0 bg-gray-100/80">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                   Médicament
@@ -71,7 +71,7 @@ const DrugList = ({
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
+            <tbody className="divide-y divide-gray-200 bg-[var(--content-bg)]">
               {drugs &&
                 drugs.map((drug) => (
                   <tr key={drug.id} className="hover:bg-gray-50">

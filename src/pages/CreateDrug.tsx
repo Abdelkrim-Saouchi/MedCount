@@ -1,5 +1,5 @@
 import { Calculator, PackagePlus, Ratio, Scale } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import CreateDrugForm from "../components/CreateDrugForm";
 import CreateFormeForm from "../components/CreateFormeForm";
 import CreateUnitForm from "../components/CreateUnitForm";
@@ -16,6 +16,8 @@ import PosologyEditModal from "../components/PosologyEditModal";
 
 const CreateDrug = () => {
   const [activeTab, setActiveTab] = useState("drug");
+  const [isScrolled, setIsScrolled] = useState(false);
+  const tabsRef = useRef<HTMLDivElement>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingDrug, setEditingDrug] = useState<Drug | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -80,15 +82,27 @@ const CreateDrug = () => {
     setIsDeleteModalOpen(true);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (tabsRef.current) {
+        const scrollPosition = window.scrollY;
+        setIsScrolled(scrollPosition > 10);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto max-w-2xl pt-4">
       {/* Tabs */}
-      <div className="mb-6 flex space-x-1 rounded-xl bg-blue-100/50 p-1">
+      <div ref={tabsRef} className={`sticky-tabs flex space-x-1 ${isScrolled ? 'scrolled' : ''}`}>
         <button
           onClick={() => setActiveTab("drug")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all duration-200 ${
             activeTab === "drug"
-              ? "bg-white text-blue-600 shadow-md"
+              ? "bg-[var(--active-tab)] text-blue-600 shadow-md"
               : "text-gray-600 hover:text-blue-600"
           }`}
         >
@@ -99,7 +113,7 @@ const CreateDrug = () => {
           onClick={() => setActiveTab("forme")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all duration-200 ${
             activeTab === "forme"
-              ? "bg-white text-blue-600 shadow-md"
+              ? "bg-[var(--active-tab)] text-blue-600 shadow-md"
               : "text-gray-600 hover:text-blue-600"
           }`}
         >
@@ -110,7 +124,7 @@ const CreateDrug = () => {
           onClick={() => setActiveTab("unite")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all duration-200 ${
             activeTab === "unite"
-              ? "bg-white text-blue-600 shadow-md"
+              ? "bg-[var(--active-tab)] text-blue-600 shadow-md"
               : "text-gray-600 hover:text-blue-600"
           }`}
         >
@@ -121,7 +135,7 @@ const CreateDrug = () => {
           onClick={() => setActiveTab("posology")}
           className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all duration-200 ${
             activeTab === "posology"
-              ? "bg-white text-blue-600 shadow-md"
+              ? "bg-[var(--active-tab)] text-blue-600 shadow-md"
               : "text-gray-600 hover:text-blue-600"
           }`}
         >
@@ -131,7 +145,7 @@ const CreateDrug = () => {
       </div>
 
       {/* Tab Content */}
-      <div className="rounded-xl bg-white p-6 shadow-md">
+      <div className="rounded-xl bg-[var(--content-bg)] p-6 shadow-md">
         {activeTab === "drug" ? (
           <>
             <CreateDrugForm />

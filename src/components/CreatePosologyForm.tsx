@@ -104,7 +104,7 @@ const CreatePosologyForm = () => {
             id="search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="rechercher un médicament..."
           />
           <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -112,7 +112,7 @@ const CreatePosologyForm = () => {
 
         {/* Search Results */}
         {searchTerm && filteredDrugs.length > 0 && !selectedDrug && (
-          <div className="absolute z-10 mt-1 w-full rounded-lg border border-gray-200 bg-white shadow-lg">
+          <div className="absolute z-10 mt-1 w-full rounded-lg border border-gray-200 bg-[var(--content-bg)] shadow-lg">
             {filteredDrugs.map((drug) => (
               <button
                 key={drug.id}
@@ -136,7 +136,7 @@ const CreatePosologyForm = () => {
 
       {/* Selected Drug Info */}
       {selectedDrug && (
-        <div className="flex items-center justify-between rounded-lg bg-blue-50 p-4">
+        <div className="flex items-center justify-between rounded-lg bg-blue-100/30 p-4">
           <div className="flex items-center gap-2">
             <Pill className="h-5 w-5 text-blue-500" />
             <div>
@@ -174,8 +174,8 @@ const CreatePosologyForm = () => {
           id="mgPerKg"
           value={unitPerKg}
           onChange={(e) => setUnitPerKg(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          placeholder="Entrer unité/kg/j"
+          className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Entrer unité/kg"
           step="0.1"
         />
       </div>
@@ -192,7 +192,7 @@ const CreatePosologyForm = () => {
           id="frequancy"
           value={frequancy}
           onChange={(e) => setFrequancy(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
           placeholder="Entrer unité/kg"
           step="0.1"
         />
@@ -210,7 +210,7 @@ const CreatePosologyForm = () => {
           id="isCalculable"
           value={isCalculable}
           onChange={(e) => setIsCalculable(parseInt(e.target.value))}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           <option value="1">Oui</option>
           <option value="0">Non</option>
@@ -231,7 +231,7 @@ const CreatePosologyForm = () => {
             id="mgInMl"
             value={mgInMl}
             onChange={(e) => setMgInMl(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full rounded-lg border border-gray-300 bg-[var(--content-bg)] px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
             placeholder="Entrer mg/ml"
           />
         </div>

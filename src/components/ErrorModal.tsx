@@ -8,7 +8,7 @@ const ErrorModal = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="mx-4 w-full max-w-md rounded-xl bg-white shadow-lg">
+      <div className="mx-4 w-full max-w-md rounded-xl bg-[var(--content-bg)] shadow-lg">
         <div className="p-6 text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
             <X className="h-6 w-6 text-red-600" />

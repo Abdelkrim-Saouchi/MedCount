@@ -38,10 +38,10 @@ const FormeList = ({
       <h2 className="mb-4 text-lg font-semibold text-gray-800">
         Liste des formes disponibles
       </h2>
-      <div className="overflow-hidden rounded-xl bg-white shadow-md">
+      <div className="overflow-hidden rounded-xl bg-[var(--content-bg)] shadow-md">
         <div className="h-[400px] overflow-x-auto overflow-y-scroll">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="sticky bg-gray-50 to-0%">
+            <thead className="sticky bg-gray-100/80 to-0%">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">
                   Forme
@@ -51,7 +51,7 @@ const FormeList = ({
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
+            <tbody className="divide-y divide-gray-200 bg-[var(--content-bg)]">
               {formes &&
                 formes.map((forme) => (
                   <tr key={forme.forme_id} className="hover:bg-gray-50">
