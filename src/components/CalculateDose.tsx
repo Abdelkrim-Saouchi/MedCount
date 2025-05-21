@@ -5,6 +5,7 @@ import useDatabase from "../hooks/useDatabase";
 import { useQuery } from "@tanstack/react-query";
 import { Posology } from "./PosologiesList";
 import { useError } from "../context/ErrorContext";
+import { FORMES } from "../constants";
 
 const CalculateDose = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -82,7 +83,7 @@ const CalculateDose = () => {
     e.preventDefault();
     if (!selectedDrug) return;
 
-    if (selectedDrug.forme_name == "sol. buv.") {
+    if (selectedDrug.forme_name == FORMES.SOLUTION_BUVABLE) {
       if (!quantityInputs.weight || !quantityInputs.selectedPosology) return;
       const weight = parseFloat(quantityInputs.weight);
       const dosagePerKg = parseFloat(quantityInputs.selectedPosology);
@@ -177,7 +178,7 @@ const CalculateDose = () => {
 
       {/* Weight Input */}
       {filteredPosologies.length > 0 &&
-        selectedDrug?.forme_name == "sol. buv." && (
+        selectedDrug?.forme_name == FORMES.SOLUTION_BUVABLE && (
           <div>
             <label
               htmlFor="weight"
@@ -206,7 +207,7 @@ const CalculateDose = () => {
 
       {/* Posology Selection */}
       {filteredPosologies.length > 0 &&
-        selectedDrug?.forme_name == "sol. buv." && (
+        selectedDrug?.forme_name == FORMES.SOLUTION_BUVABLE && (
           <div>
             <label
               htmlFor="posology"
@@ -249,7 +250,7 @@ const CalculateDose = () => {
       <button
         type="submit"
         disabled={
-          !selectedDrug || selectedDrug.forme_name == "sol. buv."
+          !selectedDrug || selectedDrug.forme_name == FORMES.SOLUTION_BUVABLE
             ? !quantityInputs.weight || !quantityInputs.selectedPosology
             : !quantityInputs.takeUnits
         }

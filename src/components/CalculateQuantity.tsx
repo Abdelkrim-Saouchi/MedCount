@@ -5,6 +5,7 @@ import useDatabase from "../hooks/useDatabase";
 import { useQuery } from "@tanstack/react-query";
 import { Posology } from "./PosologiesList";
 import { useError } from "../context/ErrorContext";
+import { FORMES } from "../constants";
 
 const CalculateQuantity = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,7 +78,7 @@ const CalculateQuantity = () => {
     if (!selectedDrug || !quantityInputs.duration) return;
 
     const duration = parseInt(quantityInputs.duration);
-    if (selectedDrug.forme_name == "sol. buv.") {
+    if (selectedDrug.forme_name == FORMES.SOLUTION_BUVABLE) {
       if (!quantityInputs.weight || !quantityInputs.selectedPosology) return;
       const weight = parseFloat(quantityInputs.weight);
       const dosagePerKg = parseFloat(quantityInputs.selectedPosology);
@@ -99,17 +100,20 @@ const CalculateQuantity = () => {
     const takeUnits = parseFloat(quantityInputs.takeUnits);
     const drugCapacity = selectedDrug.capacity;
 
-    let eyeMultiplier = 1;
-    if (selectedDrug.forme_name == "collyres") {
+    let multiplier = 1;
+    if (selectedDrug.forme_name == FORMES.COLLYRES) {
       if (!quantityInputs.eyeCount) return;
-      eyeMultiplier = quantityInputs.eyeCount === "two" ? 2 : 1;
+      multiplier = quantityInputs.eyeCount === "two" ? 2 : 1;
+    }
+    if (selectedDrug.forme_name == FORMES.NASALE) {
+      multiplier = 2;
     }
 
     // Calculate number of units needed
-    const unitsNeededForDuration = takeUnits * duration * eyeMultiplier;
-    const unitsNeeded = unitsNeededForDuration / drugCapacity;
+    const unitsNeededForDuration = takeUnits * duration * multiplier;
+    const boxNeeded = unitsNeededForDuration / drugCapacity;
 
-    setCalculationResult(unitsNeeded);
+    setCalculationResult(boxNeeded);
   };
 
   const filteredDrugs =
@@ -199,7 +203,7 @@ const CalculateQuantity = () => {
       )}
 
       {/* Weight Input */}
-      {selectedDrug?.forme_name == "sol. buv." && (
+      {selectedDrug?.forme_name == FORMES.SOLUTION_BUVABLE && (
         <div>
           <label
             htmlFor="weight"
@@ -224,7 +228,7 @@ const CalculateQuantity = () => {
       )}
 
       {/* Eye Selection */}
-      {selectedDrug?.forme_name == "collyres" && (
+      {selectedDrug?.forme_name == FORMES.COLLYRES && (
         <div>
           <label className="mb-2 block text-sm font-medium text-gray-700">
             Type de traitement
@@ -267,7 +271,7 @@ const CalculateQuantity = () => {
       )}
 
       {/* Take units Input */}
-      {selectedDrug?.forme_name != "sol. buv." && (
+      {selectedDrug?.forme_name != FORMES.SOLUTION_BUVABLE && (
         <div>
           <label
             htmlFor="take_units"
@@ -318,7 +322,7 @@ const CalculateQuantity = () => {
       </div>
 
       {/* Posology Selection */}
-      {selectedDrug?.forme_name == "sol. buv." && (
+      {selectedDrug?.forme_name == FORMES.SOLUTION_BUVABLE && (
         <div>
           <label
             htmlFor="posology"
@@ -354,7 +358,7 @@ const CalculateQuantity = () => {
         disabled={
           !selectedDrug ||
           !quantityInputs.duration ||
-          selectedDrug.forme_name == "sol. buv."
+          selectedDrug.forme_name == FORMES.SOLUTION_BUVABLE
             ? !quantityInputs.weight || !quantityInputs.selectedPosology
             : !quantityInputs.takeUnits
         }

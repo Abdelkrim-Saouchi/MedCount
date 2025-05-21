@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Layers, LucideProps, Power, X } from "lucide-react";
 import { NavLink } from "react-router";
 
